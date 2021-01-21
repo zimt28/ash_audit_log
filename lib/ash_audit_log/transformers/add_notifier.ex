@@ -4,9 +4,12 @@ defmodule AshAuditLog.Transformers.AddNotifier do
 
   import AshAuditLog.Resource, only: [audit_log_module: 1]
 
+  alias Ash.Dsl.Transformer
+
   def transform(resource, dsl) do
     notifiers = [audit_log_module(resource)] ++ get_in(dsl, [:persist, :notifiers])
-    dsl = put_in(dsl, [:persist, :notifiers], notifiers)
+
+    dsl = Transformer.persist(dsl, :notifiers, notifiers)
 
     {:ok, dsl}
   end
