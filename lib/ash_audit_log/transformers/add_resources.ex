@@ -4,33 +4,29 @@ defmodule AshAuditLog.Transformers.AddResources do
 
   import AshAuditLog.Resource, only: [audit_log_module: 1]
 
+  alias Ash.Dsl.Transformer
+
   def before?(Ash.Api.Transformers.ValidateRelatedResourceInclusion), do: true
   def before?(_), do: false
 
   def transform(_resource, dsl) do
-    entities =
-      get_in(dsl, [[:resources], :entities])
-      |> Enum.map(&maybe_add_resource_log_resource/1)
-      |> List.flatten()
-
-    dsl = put_in(dsl, [[:resources], :entities], entities)
+    dsl =
+      dsl
+      |> Transformer.get_entities([:resources])
+      |> Enum.reduce(dsl, &maybe_add_entity/2)
 
     {:ok, dsl}
   end
 
-  defp maybe_add_resource_log_resource(resource_reference) do
-    resource = resource_reference.resource
+  defp maybe_add_entity(%{resource: resource}, dsl) do
+    new_entity = %Ash.Api.ResourceReference{
+      resource: audit_log_module(resource)
+    }
 
     if uses_audit_log?(resource) do
-      [
-        resource_reference,
-        %Ash.Api.ResourceReference{
-          resource: audit_log_module(resource),
-          warn_on_compile_failure?: true
-        }
-      ]
+      Transformer.add_entity(dsl, [:resources], new_entity)
     else
-      resource_reference
+      dsl
     end
   end
 

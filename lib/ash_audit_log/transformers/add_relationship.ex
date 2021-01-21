@@ -4,6 +4,8 @@ defmodule AshAuditLog.Transformers.AddRelationship do
 
   import AshAuditLog.Resource, only: [audit_log_module: 1]
 
+  alias Ash.Dsl.Transformer
+
   def transform(resource, dsl) do
     dsl = Map.put_new(dsl, [:relationships], %{entities: [], opts: []})
 
@@ -14,16 +16,15 @@ defmodule AshAuditLog.Transformers.AddRelationship do
       destination_field: :resource_id,
       name: :audit_logs,
       # TODO: true
-      private?: false,
+      private?: true,
       source: resource,
       source_field: :id,
       type: :has_many,
       # TODO: false
-      writable?: true
+      writable?: false
     }
 
-    entities = [relationship] ++ get_in(dsl, [[:relationships], :entities])
-    dsl = put_in(dsl, [[:relationships], :entities], entities)
+    dsl = Transformer.add_entity(dsl, [:relationships], relationship)
 
     {:ok, dsl}
   end
