@@ -6,8 +6,6 @@ defmodule AshAuditLog.Notifier do
 
   alias Ash.Changeset
 
-  require Logger
-
   @always_ignore_fields Application.get_env(:ash_audit_log, :always_ignore_fields, [])
 
   def handle_notification(%Ash.Notifier.Notification{
@@ -30,7 +28,5 @@ defmodule AshAuditLog.Notifier do
     api(resource).create(changeset)
   end
 
-  def handle_notification(_notification) do
-    Logger.info("Unhandled notification")
-  end
+  def handle_notification(_notification), do: nil
 end
