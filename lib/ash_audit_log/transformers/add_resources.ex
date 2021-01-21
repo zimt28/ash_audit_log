@@ -26,7 +26,7 @@ defmodule AshAuditLog.Transformers.AddResources do
         resource_reference,
         %Ash.Api.ResourceReference{
           resource: audit_log_module(resource),
-          warn_on_compile_failure?: false
+          warn_on_compile_failure?: true
         }
       ]
     else
