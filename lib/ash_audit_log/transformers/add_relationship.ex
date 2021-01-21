@@ -10,17 +10,12 @@ defmodule AshAuditLog.Transformers.AddRelationship do
     dsl = Map.put_new(dsl, [:relationships], %{entities: [], opts: []})
 
     relationship = %Ash.Resource.Relationships.HasMany{
-      cardinality: :many,
-      description: nil,
       destination: audit_log_module(resource),
       destination_field: :resource_id,
       name: :audit_logs,
-      # TODO: true
       private?: true,
       source: resource,
       source_field: :id,
-      type: :has_many,
-      # TODO: false
       writable?: false
     }
 
