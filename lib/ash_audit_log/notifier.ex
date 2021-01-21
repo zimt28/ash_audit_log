@@ -17,7 +17,9 @@ defmodule AshAuditLog.Notifier do
       }) do
     audit_log_module = audit_log_module(resource)
 
-    changes = Map.drop(changes, ignore_fields(resource))
+    always_ignore_fields = Application.get_env(:ash_audit_log, :always_ignore_fields, [])
+
+    changes = Map.drop(changes, always_ignore_fields ++ ignore_fields(resource))
 
     changeset =
       audit_log_module
