@@ -18,6 +18,7 @@ defmodule AshAuditLog do
   use Ash.Dsl.Extension,
     sections: [@audit_log],
     transformers: [
+      AshAuditLog.Transformers.VerifyResource,
       AshAuditLog.Transformers.VerifyDataLayer,
       AshAuditLog.Transformers.AddRelationship,
       AshAuditLog.Transformers.AddNotifier,
