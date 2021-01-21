@@ -8,6 +8,8 @@ defmodule AshAuditLog.Notifier do
 
   require Logger
 
+  @always_ignore_fields Application.get_env(:ash_audit_log, :always_ignore_fields, [])
+
   def handle_notification(%Ash.Notifier.Notification{
         resource: resource,
         action: %{type: action_type},
@@ -15,14 +17,10 @@ defmodule AshAuditLog.Notifier do
         data: data,
         actor: _actor
       }) do
-    audit_log_module = audit_log_module(resource)
-
-    always_ignore_fields = Application.get_env(:ash_audit_log, :always_ignore_fields, [])
-
-    changes = Map.drop(changes, always_ignore_fields ++ ignore_fields(resource))
+    changes = Map.drop(changes, @always_ignore_fields ++ ignore_fields(resource))
 
     changeset =
-      audit_log_module
+      audit_log_module(resource)
       |> Changeset.new(%{
         action: action_type,
         changes: changes
