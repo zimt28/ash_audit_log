@@ -19,7 +19,7 @@ defmodule AshAuditLog.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ash, "~> 1.28.1"}
+      {:ash, "~> 1.30"}
     ]
   end
 end
