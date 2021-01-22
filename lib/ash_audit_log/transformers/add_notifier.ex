@@ -6,6 +6,9 @@ defmodule AshAuditLog.Transformers.AddNotifier do
 
   alias Ash.Dsl.Transformer
 
+  def before?(Ash.Api.Transformers.EnsureResourcesCompiled), do: true
+  def before?(_), do: false
+
   def transform(resource, dsl) do
     notifiers = [audit_log_module(resource)] ++ get_in(dsl, [:persist, :notifiers])
 

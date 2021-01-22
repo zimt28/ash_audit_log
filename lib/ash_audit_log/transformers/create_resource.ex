@@ -4,6 +4,9 @@ defmodule AshAuditLog.Transformers.CreateResource do
 
   import AshAuditLog.Resource
 
+  def before?(Ash.Api.Transformers.EnsureResourcesCompiled), do: true
+  def before?(_), do: false
+
   def transform(resource, dsl) do
     Module.create(
       audit_log_module(resource),

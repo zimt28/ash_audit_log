@@ -6,6 +6,9 @@ defmodule AshAuditLog.Transformers.AddRelationship do
 
   alias Ash.Dsl.Transformer
 
+  def before?(Ash.Api.Transformers.EnsureResourcesCompiled), do: true
+  def before?(_), do: false
+
   def transform(resource, dsl) do
     dsl = Map.put_new(dsl, [:relationships], %{entities: [], opts: []})
 
