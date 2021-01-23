@@ -6,17 +6,17 @@ defmodule AshAuditLog.Notifier do
 
   alias Ash.Changeset
 
-  @always_ignore_fields Application.get_env(:ash_audit_log, :always_ignore_fields, [])
+  def handle_notification(%Ash.Notifier.Notification{} = notification) do
+    %{
+      api: api,
+      resource: resource,
+      action: %{type: action_type},
+      changeset: %{attributes: changes},
+      data: data,
+      actor: _actor
+    } = notification
 
-  def handle_notification(%Ash.Notifier.Notification{
-        resource: resource,
-        action: %{type: action_type},
-        changeset: %{attributes: changes},
-        data: data,
-        actor: _actor,
-        api: api
-      }) do
-    changes = Map.drop(changes, @always_ignore_fields ++ ignore_fields(resource))
+    changes = Map.drop(changes, ignore_fields(resource))
 
     changeset =
       audit_log_module(resource)
