@@ -35,6 +35,7 @@ defmodule AshAuditLog do
 
   @doc "Whether or not the has_many relationship to the audit log should be private"
   def private?(resource) do
-    Extension.get_opt(resource, [:audit_log], :private?, true, true)
+    default = get_in(@audit_log.schema, [:private?, :default])
+    Extension.get_opt(resource, [:audit_log], :private?, default, true)
   end
 end
