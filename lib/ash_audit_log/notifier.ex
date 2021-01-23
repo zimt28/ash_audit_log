@@ -28,6 +28,4 @@ defmodule AshAuditLog.Notifier do
 
     api.create(changeset)
   end
-
-  def handle_notification(_notification), do: nil
 end
