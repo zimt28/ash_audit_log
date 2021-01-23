@@ -6,7 +6,7 @@ defmodule AshAuditLog.Transformers.VerifyDataLayer do
     if dsl[[:postgres]] != nil do
       {:ok, dsl}
     else
-      {:error, "AshPostgres must be used as the resource's data layer."}
+      {:error, "AshPostgres.DataLayer must be used as the resource's data layer."}
     end
   end
 end
