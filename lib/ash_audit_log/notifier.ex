@@ -1,7 +1,7 @@
 defmodule AshAuditLog.Notifier do
   @moduledoc ""
 
-  import AshAuditLog, only: [api: 1, ignore_fields: 1]
+  import AshAuditLog, only: [ignore_fields: 1]
   import AshAuditLog.Resource, only: [audit_log_module: 1]
 
   alias Ash.Changeset
@@ -13,7 +13,8 @@ defmodule AshAuditLog.Notifier do
         action: %{type: action_type},
         changeset: %{attributes: changes},
         data: data,
-        actor: _actor
+        actor: _actor,
+        api: api
       }) do
     changes = Map.drop(changes, @always_ignore_fields ++ ignore_fields(resource))
 
@@ -25,7 +26,7 @@ defmodule AshAuditLog.Notifier do
       })
       |> Changeset.replace_relationship(:resource, data)
 
-    api(resource).create(changeset)
+    api.create(changeset)
   end
 
   def handle_notification(_notification), do: nil
