@@ -2,6 +2,7 @@ defmodule AshAuditLog.Transformers.AddRelationship do
   @moduledoc "Adds a relationship to the resource"
   use Ash.Dsl.Transformer
 
+  import AshAuditLog, only: [private?: 1]
   import AshAuditLog.Resource, only: [audit_log_module: 1]
 
   alias Ash.Dsl.Transformer
@@ -16,7 +17,7 @@ defmodule AshAuditLog.Transformers.AddRelationship do
       destination: audit_log_module(resource),
       destination_field: :resource_id,
       name: :audit_logs,
-      private?: true,
+      private?: private?(resource),
       source: resource,
       source_field: :id,
       writable?: false
