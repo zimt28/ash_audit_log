@@ -6,7 +6,7 @@ defmodule AshAuditLog.Transformers.VerifyResource do
     if Ash.Resource.Dsl in Ash.extensions(resource) do
       {:ok, dsl}
     else
-      {:error, "The AshAuditLog extension must be used on an api."}
+      {:error, "The AshAuditLog extension must be used on a resource."}
     end
   end
 end
