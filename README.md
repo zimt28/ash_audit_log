@@ -68,7 +68,7 @@ end
 
 ### 3. Generate & run the migration
 
-> **Attention:** Until Ash adds support for modifying `on_delete` behavior, you need to add `on_delete: :delete_all` to the `resource_id` in the migration.
+> ⚠️ **Attention:** Until Ash adds support for modifying `on_delete` behavior, you need to add `on_delete: :delete_all` to the `resource_id` in the migration.
 
 Generate a migration for the audit log table by running
 
