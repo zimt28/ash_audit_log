@@ -19,7 +19,8 @@ defmodule AshAuditLog.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ash, "~> 1.30"}
+      {:ash, "~> 1.0"},
+      {:ash_postgres, "~> 0.0"}
     ]
   end
 end
