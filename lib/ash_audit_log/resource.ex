@@ -24,7 +24,7 @@ defmodule AshAuditLog.Resource do
 
       postgres do
         table unquote(table)
-        repo(unquote(repo))
+        repo unquote(repo)
       end
 
       attributes do
