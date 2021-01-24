@@ -1,5 +1,7 @@
 # AshAuditLog
 
+**🚧 This library is still work in progress and shouldn't be used yet.**
+
 `AshAuditLog` is an [Ash](https://github.com/ash-project/ash) extension that lets you track resource changes by writing to an audit log.
 
 Changes get tracked per resource, an audit log resource and database table get generated automatically. The extension is currently limited to be used with Postgres, but can easily be extended to other data layers once the need arises.
@@ -76,3 +78,7 @@ Generate a migration for the audit log table by running
 > mix ash_postgres.generate_migrations --apis App.Api
 > mix ecto.migrate
 ```
+
+### 4. Done
+
+From now on `AshAuditLog` will write every action you perform on the resource to the audit log. Functions for querying and reverting changes will be added soon.
