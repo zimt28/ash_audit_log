@@ -13,7 +13,7 @@ defmodule AshAuditLog.Notifier do
       action: %{type: action_type},
       changeset: %{attributes: changes},
       data: data,
-      actor: _actor
+      actor: actor
     } = notification
 
     changes = Map.drop(changes, ignore_fields(resource))
@@ -26,6 +26,12 @@ defmodule AshAuditLog.Notifier do
       })
       |> Changeset.replace_relationship(:resource, data)
 
-    api.create(changeset)
+    if actor do
+      changeset
+      |> Changeset.replace_relationship(:actor, actor)
+      |> api.create()
+    else
+      api.create(changeset)
+    end
   end
 end
