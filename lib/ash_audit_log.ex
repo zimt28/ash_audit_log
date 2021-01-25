@@ -4,8 +4,8 @@ defmodule AshAuditLog do
     describe: "",
     schema: [
       actor: [
-        type: :atom,
-        doc: "The actor, must be an Ash resource"
+        type: {:or, [:atom, :mod_arg]},
+        doc: "The actor, must be an Ash resource (`Module`) or a tuple (`{Module, :primary_key}`)"
       ],
       ignore_fields: [
         type: {:list, :atom},
@@ -34,8 +34,20 @@ defmodule AshAuditLog do
   alias Ash.Dsl.Extension
 
   @doc "The actor resource"
-  def actor(resource),
-    do: opt(resource, :actor)
+  def actor(resource) do
+    case opt(resource, :actor) do
+      {module, _pk} -> module
+      module_or_nil -> module_or_nil
+    end
+  end
+
+  @doc "The actor resource's primary key"
+  def actor_pk(resource) do
+    case opt(resource, :actor) do
+      {_module, pk} -> pk
+      _ -> :id
+    end
+  end
 
   @doc "Fields that don't get tracked in the audit log"
   def ignore_fields(resource),
