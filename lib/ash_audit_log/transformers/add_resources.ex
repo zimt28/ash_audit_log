@@ -31,6 +31,7 @@ defmodule AshAuditLog.Transformers.AddResources do
   end
 
   defp uses_audit_log?(resource) do
-    AshAuditLog in Ash.extensions(resource)
+    dsl = resource.ash_dsl_config()
+    AshAuditLog in Transformer.get_persisted(dsl, :extensions, [])
   end
 end
